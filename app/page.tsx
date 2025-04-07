@@ -2,7 +2,7 @@
 import { CldVideoPlayer } from "next-cloudinary";
 import 'next-cloudinary/dist/cld-video-player.css';
 
-const publicId: string = "Videos/p5o3uacesb1kjxgdqoh8";
+const publicId: string = "Videos/wfc3ypsv1qtdsvlvbugg";
 
 console.log(publicId);
 
