@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getCldImageUrl } from "next-cloudinary";
 import cloudinary from "cloudinary";
 
+
 cloudinary.v2.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
           {
             folder: "Videos",
             resource_type: "video",
+            type: "authenticated",
           },
           (error, result) => {
             if (error) reject(error);
@@ -50,8 +52,14 @@ export async function POST(request: NextRequest) {
         uplaodStream.end(buffer);
       }
     );
-
-    return NextResponse.json({ publicId: result.public_id }, { status: 200 });
+    const videoURl = cloudinary.v2.url(result.public_id, {
+      resource_type: "video",
+      type: "authenticated",
+      sign_url: true,
+      expires_at: Math.floor(Date.now() / 1000) + 60,
+    });
+    console.log(videoURl);
+    return NextResponse.json({ publicId: result.public_id, url: videoURl  }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ mssg: "error happend while uploading" });
