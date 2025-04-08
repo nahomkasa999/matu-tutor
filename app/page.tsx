@@ -2,9 +2,8 @@
 import { CldVideoPlayer } from "next-cloudinary";
 import 'next-cloudinary/dist/cld-video-player.css';
 
-const publicId: string = "Videos/wfc3ypsv1qtdsvlvbugg";
+const publicId: string = "Videos/db3qhw1hgutdq544rozh";
 
-console.log(publicId);
 
 export default function Home() {
   return (
