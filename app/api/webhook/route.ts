@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import prisma from "@/lib/prisma"
+
 
 
 export async function POST(req: Request) {
@@ -46,10 +46,10 @@ export async function POST(req: Request) {
       status: 400,
     })
   }
+  const userData = payload.data 
   // creating user
-  if (evt.type === 'user.created') {
-      console.log(body)
-  }
+ 
+
 
   return new Response('Webhook received', { status: 200 })
 }
