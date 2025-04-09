@@ -79,11 +79,12 @@ export async function POST(req: Request) {
   }
 
   if (evt.type === 'user.deleted') {
-    await prisma.user.delete({
-      where: {
-        clerkId: userData.id,
-      },
-    })
+    
+    // await prisma.user.delete({
+    //   where: {
+    //     clerkId: userData.id,
+    //   },
+    // })
 
     return new Response('User deleted', { status: 200 })
   }
