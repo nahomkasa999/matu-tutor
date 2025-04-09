@@ -1,6 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
+import prisma from '@/lib/prisma'
 
 
 
@@ -49,7 +50,43 @@ export async function POST(req: Request) {
   const userData = payload.data 
   // creating user
  
+  if (evt.type === 'user.created') {
+      await prisma.user.create({
+        data: {
+          firstName: userData.first_name,
+          lastName: userData.last_name,
+          email: userData.email_addresses[0].email_address,
+          clerkId: userData.id,
+        },
+      })
 
+      return new Response('User created', { status: 200 })
+  }
+
+  if (evt.type === 'user.updated') {
+    await prisma.user.update({
+      where: {
+        clerkId: userData.id,
+      },
+      data: {
+        firstName: userData.first_name,
+        lastName: userData.last_name,
+        email: userData.email_addresses[0].email_address,
+      },
+    })
+
+    return new Response('User updated', { status: 200 })
+  }
+
+  if (evt.type === 'user.deleted') {
+    await prisma.user.delete({
+      where: {
+        clerkId: userData.id,
+      },
+    })
+
+    return new Response('User deleted', { status: 200 })
+  }
 
   return new Response('Webhook received', { status: 200 })
 }
