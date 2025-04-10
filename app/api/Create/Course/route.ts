@@ -1,16 +1,18 @@
 import prisma from "@/lib/prisma";
-
+import { NextResponse, NextRequest } from "next/server";
 export async function POST(req: Request) {
-    const connnect = await prisma.$connect();
+    const {title, description, price} = await req.json();
+    console.log("Title: ", title,   "Description: ", description, "Price: ", price);
+    await prisma.$connect();
      
      await prisma.course.create({
         data: {
-            title: "Applied Mathematics 2",
-            description: "Course Description",
-            price: 200,
+            title,
+            description,
+            price,
         }
      })
      await prisma.$disconnect();
-    return new Response("Course created", { status: 200 });
+    return  NextResponse.json({message: "Course Created"}, {status: 200});
 
 }
