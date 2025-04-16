@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -9,22 +9,24 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid())
-  clerkId     String       @unique
+  id          String        @id @default(cuid())
+  clerkId     String        @unique
   firstName   String
   lastName    String
-  email       String       @unique
-  role        UserRole     @default(USER)
+  email       String        @unique
+  role        UserRole      @default(USER)
   enrollments Enrollment[]
+  Transaction Transaction[]
 }
 
 model Course {
-  id          String       @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String
   description String?
   price       Int
   enrollments Enrollment[]
   sections    Section[]
+  Transaction Transaction[]
 }
 
 model Section {
@@ -70,6 +72,18 @@ model Test {
   questions String
   sectionId String  @unique
   section   Section @relation(fields: [sectionId], references: [id])
+}
+
+model Transaction {
+  id                String   @id
+  transactionId     String   @unique
+  transactionAmount Int
+  used              Boolean  @default(false)
+  usedById          String?
+  courseId          String?
+  createdAt         DateTime @default(now())
+  Course            Course?  @relation(fields: [courseId], references: [id])
+  User              User?    @relation(fields: [usedById], references: [id])
 }
 
 enum UserRole {
