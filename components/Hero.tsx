@@ -3,7 +3,7 @@ import Link from 'next/link';
 import image from '../public/Math-Logo.jpg'; 
 const Hero = () => {
   return (
-    <section className='flex flex-row md:flex-row items-center justify-between p-10 mt-10'>
+    <section className='flex flex-row md:flex-row items-center justify-between p-10 mt-10' id='Home'>
         {/* Left Content */}
         <div className='flex flex-col gap-4 w-1/2  justify-center'>
           <h1 className='text-[70px] font-extrabold leading-none'>One Course. One Goal. Your A+.</h1>

@@ -24,8 +24,7 @@ function Navbar() {
 
       <div className="flex items-center gap-10">
         <nav className="flex gap-6 text-xl font-medium">
-          <a href="#">Course</a>
-          <a href="#">Pricing</a>
+          <a href="#pricing">Pricing</a>
         </nav>
 
         <div className="flex items-center gap-6">
