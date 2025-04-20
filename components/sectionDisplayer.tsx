@@ -1,7 +1,7 @@
 import React from "react";
 import prisma from "@/lib/prisma";
 
-async function sectionDisplayer() {
+async function SectionDisplayer() {
   await prisma.$connect();
 
   const sections = await prisma.section.findMany({
@@ -38,4 +38,4 @@ async function sectionDisplayer() {
   );
 }
 
-export default sectionDisplayer;
+export default SectionDisplayer;

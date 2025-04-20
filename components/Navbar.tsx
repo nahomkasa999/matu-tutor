@@ -1,53 +1,75 @@
+"use client";
 import React from "react";
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
-import { cn } from "@/utils/cn";
+import { useTheme } from "@/context/ThemeContext";
+import { Sun, Moon } from "lucide-react";
 
 function Navbar() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-md border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text">
-                Matu Tutor
-              </span>
-            </Link>
-          </div>
+    <div className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700">
+      <Link href="/">
+        <span className={`text-3xl font-bold font-lato ${theme === "light" ? "text-black" : "text-white"}`}>
+          Matu Tutor
+        </span>
+      </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/courses" className="text-gray-300 hover:text-white transition-colors">
-              Courses
-            </Link>
-            <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
-              Pricing
-            </Link>
-            <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
-              About
-            </Link>
-          </div>
+      <div className="flex items-center gap-10">
+        <nav className="flex gap-6 text-xl font-medium">
+          <a href="#">Course</a>
+          <a href="#">Pricing</a>
+        </nav>
 
-          <div className="flex items-center space-x-4">
-            <SignedOut>
+        <div className="flex items-center gap-6">
+          <button
+            onClick={toggleTheme}
+            className="p-3 bg-gray-100 dark:bg-gray-800 transition-all duration-300 hover:scale-110"
+          >
+            {theme === "light" ? (
+              <Moon className="h-6 w-6 text-white" />
+            ) : (
+              <Sun className="h-6 w-6 text-yellow-400" />
+            )}
+          </button>
+
+          <SignedOut>
+            <div className="flex items-center gap-4">
               <SignInButton mode="modal">
-                <button className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                <button className="text-xl" >
                   Sign In
                 </button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-md hover:opacity-90 transition-opacity">
-                  Get Started
+                <button className="border-3  border-black dark:border-white w-20  h-10 bolder text-xl">
+                  Sign Up
                 </button>
               </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-          </div>
+            </div>
+          </SignedOut>
+
+          <SignedIn>
+            <div className="w-12 h-12 bg-cover flex items-center justify-center rounded-full">
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "w-12 h-12",
+                  },
+                }}
+              />
+            </div>
+          </SignedIn>
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
 
