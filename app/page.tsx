@@ -2,6 +2,7 @@
 
 import Benefits from "@/components/Benefits";
 import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Pricing from "@/components/Pricing";
 
@@ -13,6 +14,7 @@ export default async function Home() {
      <Benefits/>
      <Pricing/>
      <FAQ/>
+     <Footer/>
     </div>
   );
 }
