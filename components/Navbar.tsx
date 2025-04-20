@@ -15,7 +15,7 @@ function Navbar() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700">
+    <div className="flex justify-between items-center px-6 py-4 border-b-3 border-gray-950 dark:border-gray-700">
       <Link href="/">
         <span className={`text-3xl font-bold font-lato ${theme === "light" ? "text-black" : "text-white"}`}>
           Matu Tutor
