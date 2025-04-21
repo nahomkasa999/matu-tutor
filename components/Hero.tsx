@@ -11,12 +11,7 @@ const Hero = () => {
             Built by Ethiopia's #1 university math professor. Over 90% of our students passed - many with A+.
           </p>
           <div className='flex gap-20 mt-10'>
-            <Link href="/course">
-              <button className='bg-black text-white h-15 p-5 flex items-center rounded-[5px] '>Get the Course Now</button>
-            </Link>
-            <Link href="/what-is-inside">
-              <button className='bg-black text-white h-15 p-5 flex items-center rounded-[5px] '>See What's Inside</button>
-            </Link>
+              <a className='bg-black text-white h-15 p-5 flex items-center rounded-[5px] ' href='#pricing' >Get the Course Now</a>
           </div>
         </div>
         {/* Right Image */}

@@ -1,7 +1,10 @@
 import { CheckCircle } from 'lucide-react'
+import Link from 'next/link';
+
 
 const courses = [
   {
+    id: "cm9qsaadc0000e2hecjxfsfgd",
     title: 'Mathematics Applied I',
     price: '200 Birr',
     bg: 'bg-black',
@@ -14,6 +17,7 @@ const courses = [
     ],
   },
   {
+    id: 2,
     title: 'Mathematics Applied II',
     price: '200 Birr',
     bg: 'bg-black',
@@ -26,6 +30,7 @@ const courses = [
     ],
   },
   {
+    id: 3,
     title: 'Mathematics Applied III',
     price: '300 Birr',
     bg: 'bg-black',
@@ -38,6 +43,7 @@ const courses = [
     ],
   },
   {
+    id: 4,
     title: 'Mathematics Applied IV',
     price: '300 Birr',
     bg: 'bg-black',
@@ -71,7 +77,10 @@ const Pricing = () => {
                 </li>
               ))}
             </ul>
-            <button className="bg-white text-black px-6 py-2 rounded">GET A+ FOR {course.price.toUpperCase()}</button>
+            <Link href={`/courses/purchase/${course.id}`} >
+            <button className=" bg-[#ffd67c] text-black px-6 py-2 rounded w-[200px]">GET A+ FOR</button>
+            </Link>
+            
           </div>
         ))}
       </div>

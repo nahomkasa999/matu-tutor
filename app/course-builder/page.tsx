@@ -1,121 +1,188 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React, { useState, useEffect } from "react";
 
+export default function CourseBuilder() {
+  const [courses, setCourses] = useState<{ id: string; title: string; description: string; price: number }[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [courseTitle, setCourseTitle] = useState("");
+  const [courseDescription, setCourseDescription] = useState("");
+  const [coursePrice, setCoursePrice] = useState<number | "">("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-export default function courseBuilder() {
-  const [courseTitle, setCourseTitle] = useState('')
-  const [courseDescription, setCourseDescription] = useState('')
-  const [coursePrice, setCoursePrice] = useState(0)
+  // Fetch courses from the database
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await fetch("/api/Create/Course");
+        const data = await response.json();
+        console.log(data)
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if (!courseTitle || !courseDescription || !coursePrice) {
+      setMessage({ type: "error", text: "All fields are required." });
+      return;
+    }
 
     const courseData = {
       title: courseTitle,
       description: courseDescription,
       price: coursePrice,
-    }
+    };
 
-    console.log(courseData)
+    setIsSubmitting(true);
+    setMessage(null);
 
     try {
-      const response = await fetch('/api/Create/Course', {
-        method: 'POST',
+      const response = await fetch("/api/Create/Course", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(courseData),
-      })
+      });
 
       if (response.ok) {
-        console.log('Course created successfully')
+        setMessage({ type: "success", text: "Course created successfully!" });
+        setCourseTitle("");
+        setCourseDescription("");
+        setCoursePrice("");
+        // Refresh the course list
+        const updatedCourses = await response.json();
+        setCourses((prevCourses) => [...prevCourses, updatedCourses]);
+        setShowForm(false);
       } else {
-        console.error('Error creating course')
+        setMessage({ type: "error", text: "Failed to create the course. Please try again." });
       }
     } catch (error) {
-      console.error('Error:', error)
+      console.error("Error:", error);
+      setMessage({ type: "error", text: "An error occurred. Please try again." });
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
+
   return (
-     <div className='flex flex-col items-center justify-center h-screen bg-white text-black'>
-        <h1 className='text-2xl font-bold mb-4'>Course Builder</h1>
-        <form className='flex flex-col w-full max-w-md' onSubmit={handleSubmit}>
-          <label className='mb-2'>Course Title:</label>
-          <input
-            type='text'
-            value={courseTitle}
-            onChange={(e) => setCourseTitle(e.target.value)}
-            className='border border-gray-800 p-2 mb-4'
-          />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-4xl font-bold mb-6">Course Builder</h1>
 
-          <label className='mb-2'>Course Description:</label>
-          <textarea
-            value={courseDescription}
-            onChange={(e) => setCourseDescription(e.target.value)}
-            className='border border-gray-800 p-2 mb-4'
-          />
+      {/* Display Courses */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+        {courses.map((course: any) => (
+          <div
+            key={course.id}
+            className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 flex flex-col justify-between"
+          >
+            <h2 className="text-2xl font-bold mb-4">{course.title}</h2>
+            <p className="text-lg mb-4">{course.description}</p>
+            <p className="text-lg font-semibold">Price: {course.price} Birr</p>
+            <p>{course.id}</p>
+          </div>
+        ))}
+      </div>
 
-          <label className='mb-2'>Course Price:</label>
-          <input
-            type = "Number"
-            value={coursePrice}
-            onChange={(e) => setCoursePrice(Number(e.target.value))}
-            className='border border-gray-800 p-2 mb-4'
-          />
+      {/* Toggle Create Course Form */}
+      <button
+        onClick={() => setShowForm((prev) => !prev)}
+        className="mt-8 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-bold dark:bg-blue-700 dark:hover:bg-blue-800"
+      >
+        {showForm ? "Cancel" : "Create Course"}
+      </button>
 
-          <button type='submit' className='bg-blue-500 text-black p-2 rounded'>
-            Create Course
-          </button>
-        </form>
-     </div>
-  )
-  
+      {/* Course Creation Form */}
+      {showForm && (
+        <div className="mt-8 w-full max-w-lg">
+          <form
+            className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8"
+            onSubmit={handleSubmit}
+          >
+            {message && (
+              <div
+                className={`mb-4 p-3 rounded ${
+                  message.type === "success"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
 
+            <div className="mb-4">
+              <label
+                htmlFor="courseTitle"
+                className="block text-lg font-medium mb-2 dark:text-gray-200"
+              >
+                Course Title
+              </label>
+              <input
+                id="courseTitle"
+                type="text"
+                value={courseTitle}
+                onChange={(e) => setCourseTitle(e.target.value)}
+                className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                placeholder="Enter course title"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="courseDescription"
+                className="block text-lg font-medium mb-2 dark:text-gray-200"
+              >
+                Course Description
+              </label>
+              <textarea
+                id="courseDescription"
+                value={courseDescription}
+                onChange={(e) => setCourseDescription(e.target.value)}
+                className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                placeholder="Enter course description"
+                rows={4}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="coursePrice"
+                className="block text-lg font-medium mb-2 dark:text-gray-200"
+              >
+                Course Price (Birr)
+              </label>
+              <input
+                id="coursePrice"
+                type="number"
+                value={coursePrice}
+                onChange={(e) => setCoursePrice(Number(e.target.value))}
+                className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                placeholder="Enter course price"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-3 rounded-lg text-white font-bold ${
+                isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed dark:bg-gray-600"
+                  : "bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+              }`}
+            >
+              {isSubmitting ? "Creating..." : "Create Course"}
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
+  );
 }
-
-
-
-
-
-
-
-// "use client"
-// import React, {useState} from 'react'
-// import axios from 'axios'
-
-// function videoupload() {
-//   const [file, setFile] = useState<File | null>(null)
-  
-
-//   const handlesubmit = () =>{
-//     const formData = new FormData() 
-
-//     if(file){
-//       formData.append("file", file)
-//     }
-//     axios.post("/api/video_uploader", formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data"
-//       }
-//     }).then((res) => {
-//       console.log(res)
-//     }).catch((err) => {
-//       console.log(err)
-//     })
-
-//   }
-
-//   return (
-//     <div>
-//       <h1>Video Upload</h1>
-//       <form action={handlesubmit}>
-//         <label htmlFor="file">Select a video file:</label>
-//         <input type="file" accept="video/*" onChange={(e) => {setFile(e.target.files?.[0] || null)}} />
-//         <button type="submit">Upload</button>
-//       </form>
-//     </div>
-
-//   )
-// }
-
-// export default videoupload

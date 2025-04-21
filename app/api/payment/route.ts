@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma  from "@/lib/prisma"
 import { getAuth } from "@clerk/nextjs/server";
 
-export async function POST(req: NextRequest, { params }: { params: { courseId: string } }) {
-  //const clerkid  = getAuth(req).userId
+export async function POST(req: NextRequest, res: NextResponse) {
 
- 
+  // const { transactionId, courseId } = await req.json()
+  const { transactionId, courseId } = await req.json();
+
+ console.log("Transaction ID: ", transactionId, "Course ID: ", courseId)
   const clerkId  =  "user_2vUN28EOwM8R8yUdgdgru0bUIw4";
   const userIdobject = await prisma.user.findFirst({
     where: {clerkId: clerkId},
@@ -17,11 +19,13 @@ export async function POST(req: NextRequest, { params }: { params: { courseId: s
  
   if (!userId) return new Response("Unauthorized", { status: 401 })
 
-  const { transactionId } = await req.json()
-  const {courseId} = await params
+
+  console.log("Transaction ID: ", transactionId, "Course ID: ", courseId)
 
   const course = await prisma.course.findUnique({
-    where: { id: courseId },
+    where: {
+       id: courseId
+       },
   })
 
   
