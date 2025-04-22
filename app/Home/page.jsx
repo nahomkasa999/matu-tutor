@@ -1,7 +1,8 @@
 import React from 'react'
 import SectionDisplayer from '../../components/sectionDisplayer'
 
-function viewSection() {
+function  viewSection() {
+  
   return (
        <SectionDisplayer/>
   )

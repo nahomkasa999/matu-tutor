@@ -47,3 +47,21 @@ export async function POST(req: Request) {
   
   return NextResponse.json({ message: "Course Created" }, { status: 200 });
 }
+
+
+export async function GET() {
+  await prisma.$connect();
+
+  // Step 2: Fetch all sections from the database
+  const sections = await prisma.section.findMany({
+    include: {
+      pdfs: true,
+      videos: true,
+      test: true,
+    },
+  });
+
+  await prisma.$disconnect();
+
+  return NextResponse.json(sections, { status: 200 });
+}
