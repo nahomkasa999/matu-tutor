@@ -26,14 +26,14 @@ export default function SectionDisplayer() {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-80 p-4 border-r border-gray-300 backdrop-blur-md overflow-y-auto">
+      <aside className="w-80 p-4 border-r border-gray-500 backdrop-blur-md overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Course Sections</h2>
         <div className="space-y-4">
           {sections.map((section) => (
             <button
               key={section.id}
               className={`w-full text-left font-semibold text-lg p-2 rounded-lg ${
-                activeSection?.id === section.id ? "bg-blue-100" : "hover:bg-gray-100"
+                activeSection?.id === section.id ? "bg-blue-800" : "hover:bg-gray-900 hover:text-white"
               }`}
               onClick={() => handleSectionClick(section)}
             >
