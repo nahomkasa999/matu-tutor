@@ -61,6 +61,8 @@ export default function SectionDisplayer() {
             ))}
 
             {/* PDFs */}
+            <h3 className="text-2xl font-bold mb-4">PDFs</h3>
+            <hr className="mb-10 mt-10"/>
             {activeSection.pdfs?.map((pdf: any) => (
               <div key={pdf.id} className="mb-6">
                 <a
@@ -80,7 +82,7 @@ export default function SectionDisplayer() {
                 href={`http://res.cloudinary.com/dzimvdwb2/raw/upload/${activeSection.test.questions}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block underline text-blue-600 text-center"
+                className="block underline text-blue-600"
               >
                 🧪 {activeSection.test.title}
               </a>
