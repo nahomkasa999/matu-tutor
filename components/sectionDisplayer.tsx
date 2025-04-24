@@ -63,10 +63,14 @@ export default function SectionDisplayer() {
             {/* PDFs */}
             {activeSection.pdfs?.map((pdf: any) => (
               <div key={pdf.id} className="mb-6">
-                <iframe
-                  src={`http://res.cloudinary.com/dzimvdwb2/image/upload/${pdf.cloudinaryUrl}.pdf`}
-                  className="w-full h-96 rounded-xl"
-                />
+                <a
+                  href={pdf.cloudinaryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline"
+                >
+                  📄 {pdf.title || "View PDF"}
+                </a>
               </div>
             ))}
 
