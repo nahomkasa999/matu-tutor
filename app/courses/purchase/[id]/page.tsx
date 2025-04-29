@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
 
 const MathematicsCoursePayment = () => {
   const { id } = useParams();
+  const router = useRouter();
   const courseId = id as string;
 
   const [transactionId, setTransactionId] = useState("");
@@ -36,9 +37,11 @@ const MathematicsCoursePayment = () => {
       if (response.ok) {
         setSuccessMessage("Payment submitted successfully!");
         setTransactionId("");
+        router.push("/Home");
       } else {
         const errText = await response.text();
         setErrorMessage(errText || "Failed to submit payment. Please try again.");
+
       }
     } catch (error) {
       setErrorMessage("Network error. Please try again later.");

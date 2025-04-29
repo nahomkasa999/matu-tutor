@@ -1,9 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 export default function SectionDisplayer() {
   const [sections, setSections] = useState<any[]>([]);
   const [activeSection, setActiveSection] = useState<any | null>(null);
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   const fetchSections = async () => {
     try {
@@ -61,18 +66,14 @@ export default function SectionDisplayer() {
             ))}
 
             {/* PDFs */}
-            <h3 className="text-2xl font-bold mb-4">PDFs</h3>
-            <hr className="mb-10 mt-10"/>
             {activeSection.pdfs?.map((pdf: any) => (
               <div key={pdf.id} className="mb-6">
-                <a
-                  href={pdf.cloudinaryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  📄 {pdf.title || "View PDF"}
-                </a>
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                  <Viewer
+                    fileUrl={pdf.cloudinaryUrl}
+                    plugins={[defaultLayoutPluginInstance]}
+                  />
+                </Worker>
               </div>
             ))}
 
