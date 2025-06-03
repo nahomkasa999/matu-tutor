@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function CourseBuilder() {
   const [courses, setCourses] = useState<{ id: string; title: string; description: string; price: number }[]>([]);
@@ -10,13 +11,11 @@ export default function CourseBuilder() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  // Fetch courses from the database
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const response = await fetch("/api/Create/Course");
         const data = await response.json();
-        console.log(data)
         setCourses(data);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -57,7 +56,6 @@ export default function CourseBuilder() {
         setCourseTitle("");
         setCourseDescription("");
         setCoursePrice("");
-        // Refresh the course list
         const updatedCourses = await response.json();
         setCourses((prevCourses) => [...prevCourses, updatedCourses]);
         setShowForm(false);
@@ -76,30 +74,37 @@ export default function CourseBuilder() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       <h1 className="text-4xl font-bold mb-6">Course Builder</h1>
 
-      {/* Display Courses */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4">
-        {courses.map((course: any) => (
+        {courses.map((course) => (
           <div
             key={course.id}
             className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 flex flex-col justify-between"
           >
-            <h2 className="text-2xl font-bold mb-4">{course.title}</h2>
-            <p className="text-lg mb-4">{course.description}</p>
-            <p className="text-lg font-semibold">Price: {course.price} Birr</p>
-            <p>{course.id}</p>
+            <div>
+              <h2 className="text-2xl font-bold mb-4">{course.title}</h2>
+              <p className="text-lg mb-4">{course.description}</p>
+              <p className="text-lg font-semibold">Price: {course.price} Birr</p>
+            </div>
+            <div className="mt-4 flex justify-between items-center">
+              <Link 
+                href={`/course-builder/${course.id}`}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"
+              >
+                Add Sections
+              </Link>
+              <p className="text-sm text-gray-500">ID: {course.id}</p>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Toggle Create Course Form */}
       <button
         onClick={() => setShowForm((prev) => !prev)}
-        className="mt-8 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-bold dark:bg-blue-700 dark:hover:bg-blue-800"
+        className="mt-8 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-bold dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
       >
         {showForm ? "Cancel" : "Create Course"}
       </button>
 
-      {/* Course Creation Form */}
       {showForm && (
         <div className="mt-8 w-full max-w-lg">
           <form
@@ -172,7 +177,7 @@ export default function CourseBuilder() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-3 rounded-lg text-white font-bold ${
+              className={`w-full py-3 rounded-lg text-white font-bold transition-colors ${
                 isSubmitting
                   ? "bg-gray-400 cursor-not-allowed dark:bg-gray-600"
                   : "bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"

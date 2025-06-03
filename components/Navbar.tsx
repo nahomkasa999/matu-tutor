@@ -24,16 +24,20 @@ function Navbar() {
 
       <div className="flex items-center gap-10">
         <nav className="flex gap-6 text-xl font-medium">
-          <a href="#pricing">Pricing</a>
+          <Link href="/#pricing" className="hover:text-gray-600 transition-colors">Pricing</Link>
+          <SignedIn>
+            <Link href="/Home" className="hover:text-gray-600 transition-colors">My Courses</Link>
+            <Link href="/course-builder" className="hover:text-gray-600 transition-colors">Course Builder</Link>
+          </SignedIn>
         </nav>
 
         <div className="flex items-center gap-6">
           <button
             onClick={toggleTheme}
-            className="p-3 bg-gray-100 dark:bg-gray-800 transition-all duration-300 hover:scale-110"
+            className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg transition-all duration-300 hover:scale-110"
           >
             {theme === "light" ? (
-              <Moon className="h-6 w-6 text-white" />
+              <Moon className="h-6 w-6 text-gray-800" />
             ) : (
               <Sun className="h-6 w-6 text-yellow-400" />
             )}
@@ -42,12 +46,12 @@ function Navbar() {
           <SignedOut>
             <div className="flex items-center gap-4">
               <SignInButton mode="modal">
-                <button className="text-xl" >
+                <button className="text-xl hover:text-gray-600 transition-colors">
                   Sign In
                 </button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button className="border-3  border-black dark:border-white w-20  h-10 bolder text-xl">
+                <button className="border-3 border-black dark:border-white w-20 h-10 text-xl rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                   Sign Up
                 </button>
               </SignUpButton>

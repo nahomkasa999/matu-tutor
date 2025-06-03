@@ -1,10 +1,9 @@
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link';
 
-
 const courses = [
   {
-    id: "cm9qsaadc0000e2hecjxfsfgd",
+    id: "cm9bcf9x90006e2ylxxrda4fa",
     title: 'Mathematics Applied I',
     price: '200 Birr',
     bg: 'bg-black',
@@ -17,7 +16,7 @@ const courses = [
     ],
   },
   {
-    id: 2,
+    id: "cm9bcf9x90006e2ylxxrda4fb",
     title: 'Mathematics Applied II',
     price: '200 Birr',
     bg: 'bg-black',
@@ -30,7 +29,7 @@ const courses = [
     ],
   },
   {
-    id: 3,
+    id: "cm9bcf9x90006e2ylxxrda4fc",
     title: 'Mathematics Applied III',
     price: '300 Birr',
     bg: 'bg-black',
@@ -43,7 +42,7 @@ const courses = [
     ],
   },
   {
-    id: 4,
+    id: "cm9bcf9x90006e2ylxxrda4fd",
     title: 'Mathematics Applied IV',
     price: '300 Birr',
     bg: 'bg-black',
@@ -69,7 +68,7 @@ const Pricing = () => {
               {course.price} / Month
             </div>
             <h3 className="text-5xl font-bold mb-10 text-left">{course.title}</h3>
-            <ul className="text-left space-y-3  ml-3 h-[46vh] ">
+            <ul className="text-left space-y-3 ml-3 h-[46vh]">
               {course.features.map((feature, idx) => (
                 <li key={idx} className="flex items-start gap-2 text-2xl font-light">
                   <CheckCircle size={16} className="text-green-400 mt-1" />
@@ -77,10 +76,11 @@ const Pricing = () => {
                 </li>
               ))}
             </ul>
-            <Link href={`/courses/purchase/${course.id}`} >
-            <button className=" bg-[#ffd67c] text-black px-6 py-2 rounded w-[200px]">GET A+ FOR</button>
+            <Link href={`/courses/purchase/${course.id}`}>
+              <button className="bg-[#ffd67c] text-black px-6 py-2 rounded w-[200px] hover:bg-[#ffd374] transition-colors">
+                GET A+ FOR {course.price}
+              </button>
             </Link>
-            
           </div>
         ))}
       </div>
